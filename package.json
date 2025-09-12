@@ -18,6 +18,10 @@
         "title": "Hello World"
       },
       {
+        "command": "qy-vscode-plugin.quickCommit",
+        "title": "qiuye: Push: chore update"
+      },
+      {
         "command": "qy-vscode-plugin.openRepo",
         "title": "qiuye: 打开远程仓库地址"
       }
@@ -26,8 +30,13 @@
       "editor/context": [
         {
           "when": "editorFocus",
+          "command": "qy-vscode-plugin.quickCommit",
+          "group": "navigation@1"
+        },
+        {
+          "when": "editorFocus",
           "command": "qy-vscode-plugin.openRepo",
-          "group": "navigation"
+          "group": "navigation@2"
         }
       ]
     }
