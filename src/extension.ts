@@ -1,5 +1,6 @@
 // 'vscode' 模块包含 VS Code 扩展性 API
 import * as vscode from 'vscode'
+import { activate as quickGitActivate } from './activates/quickGit'
 
 // 当您的扩展被激活时调用此方法
 // 您的扩展在第一次执行命令时被激活
@@ -7,6 +8,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// 这行代码只会在您的扩展被激活时执行一次
 	console.log('恭喜！您的扩展 "qy-vscode-plugin" 现在已经激活！')
+
+	quickGitActivate(context)
 
 	// 命令已在 package.json 文件中定义
 	// 现在使用 registerCommand 提供命令的实现
