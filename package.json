@@ -31,12 +31,12 @@
         {
           "when": "editorFocus",
           "command": "qy-vscode-plugin.quickCommit",
-          "group": "navigation@1"
+          "group": "navigation@-999"
         },
         {
           "when": "editorFocus",
           "command": "qy-vscode-plugin.openRepo",
-          "group": "navigation@2"
+          "group": "navigation@-998"
         }
       ]
     }
