@@ -44,8 +44,6 @@ npm run esbuild-watch
 npm run lint
 ```
 
-## 发布
-
 ### 打包扩展
 
 ```bash
