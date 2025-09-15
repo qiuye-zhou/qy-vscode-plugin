@@ -5,6 +5,7 @@
 ## 功能特性
 
 - Hello World 命令示例
+- 快速提交代码
 - 更多功能正在开发中...
 
 ## 开发环境设置
@@ -42,8 +43,6 @@ npm run esbuild-watch
 ```bash
 npm run lint
 ```
-
-## 发布
 
 ### 打包扩展
 
