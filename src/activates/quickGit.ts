@@ -33,6 +33,46 @@ export function activate(context: vscode.ExtensionContext): void {
         }
     }))
 
+    // 自定义提交代码的命令
+    context.subscriptions.push(vscode.commands.registerCommand('qy-vscode-plugin.customCommit', async () => {
+        try {
+            const gitContext = await getGitContext()
+            if (!gitContext) {return}
+
+            const { git } = gitContext
+
+            // 检查是否是 Git 仓库
+            const isGitRepo: boolean = await git.checkIsRepo()
+            if (!isGitRepo) {
+                await initializeGitRepo(git)
+                return
+            }
+
+            // 获取提交信息
+            const commitMessage: string | undefined = await vscode.window.showInputBox({
+                prompt: '请输入提交信息',
+                placeHolder: '例如: 更新代码'
+            })
+
+            if (!commitMessage) {
+                return
+            }
+
+            // 添加所有更改的文件
+            await git.add('.')
+
+            // 提交更改
+            await git.commit(commitMessage)
+
+            // 推送到远程仓库
+            await git.push()
+
+            vscode.window.showInformationMessage('代码提交成功！')
+        } catch (err) {
+            vscode.window.showErrorMessage(`提交代码失败: ${err instanceof Error ? err.message : String(err)}`)
+        }
+    }))
+
     // 打开远程仓库地址的命令
     context.subscriptions.push(vscode.commands.registerCommand('qy-vscode-plugin.openRepo', async () => {
         try {
