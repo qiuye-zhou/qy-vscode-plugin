@@ -49,7 +49,7 @@ npm run lint
 
 ```bash
 npm install -g vsce
-vsce package
+vsce package --no-dependencies
 ```
 
 ### 安装扩展
