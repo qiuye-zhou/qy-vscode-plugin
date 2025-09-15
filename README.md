@@ -6,6 +6,7 @@
 
 - Hello World 命令示例
 - 快速提交代码
+- 自定义提交代码的命令
 - 更多功能正在开发中...
 
 ## 开发环境设置
@@ -21,12 +22,6 @@
 ```bash
 npm install
 ```
-
-### 开发调试
-
-1. 按 `F5` 或使用 `Ctrl+Shift+P` 打开命令面板，选择 "Debug: Start Debugging"
-2. 这将打开一个新的 VSCode 窗口，其中加载了您的扩展
-3. 在新窗口中按 `Ctrl+Shift+P` 并运行 "Hello World" 命令
 
 ### 构建
 
@@ -47,6 +42,8 @@ npm run lint
 ### 打包扩展
 
 ```bash
+npm run build
+
 npm install -g vsce
 vsce package --no-dependencies
 ```
