@@ -5,108 +5,142 @@ import { getProjectRoot } from '../utils'
 export function activate(context: vscode.ExtensionContext): void {
     // 快速提交代码的命令
     context.subscriptions.push(vscode.commands.registerCommand('qy-vscode-plugin.quickCommit', async () => {
-        try {
-            const gitContext = await getGitContext()
-            if (!gitContext) {return}
+        await vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            cancellable: false
+        }, async (progress) => {
+            try {
+                progress.report({ increment: 10, message: "获取Git上下文..." })
+                const gitContext = await getGitContext()
+                if (!gitContext) {return}
 
-            const { git } = gitContext
+                const { git } = gitContext
 
-            // 检查是否是 Git 仓库
-            const isGitRepo: boolean = await git.checkIsRepo()
-            if (!isGitRepo) {
-                await initializeGitRepo(git)
-                return
+                progress.report({ increment: 20, message: "检查Git仓库..." })
+                // 检查是否是 Git 仓库
+                const isGitRepo: boolean = await git.checkIsRepo()
+                if (!isGitRepo) {
+                    await initializeGitRepo(git)
+                    return
+                }
+
+                progress.report({ increment: 30, message: "添加文件到暂存区..." })
+                // 添加所有更改的文件
+                await git.add('.')
+
+                progress.report({ increment: 40, message: "提交更改..." })
+                // 提交更改
+                await git.commit("chore: update")
+
+                progress.report({ increment: 50, message: "推送到远程仓库..." })
+                // 推送到远程仓库
+                await git.push()
+
+                progress.report({ increment: 100, message: "完成！" })
+                vscode.window.showInformationMessage('代码提交成功！')
+            } catch (err) {
+                vscode.window.showErrorMessage(`提交代码失败: ${err instanceof Error ? err.message : String(err)}`)
             }
-
-            // 添加所有更改的文件
-            await git.add('.')
-
-            // 提交更改
-            await git.commit("chore: update")
-
-            // 推送到远程仓库
-            await git.push()
-
-            vscode.window.showInformationMessage('代码提交成功！')
-        } catch (err) {
-            vscode.window.showErrorMessage(`提交代码失败: ${err instanceof Error ? err.message : String(err)}`)
-        }
+        })
     }))
 
     // 自定义提交代码的命令
     context.subscriptions.push(vscode.commands.registerCommand('qy-vscode-plugin.customCommit', async () => {
-        try {
-            const gitContext = await getGitContext()
-            if (!gitContext) {return}
+        await vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            cancellable: false
+        }, async (progress) => {
+            try {
+                progress.report({ increment: 10, message: "获取Git上下文..." })
+                const gitContext = await getGitContext()
+                if (!gitContext) {return}
 
-            const { git } = gitContext
+                const { git } = gitContext
 
-            // 检查是否是 Git 仓库
-            const isGitRepo: boolean = await git.checkIsRepo()
-            if (!isGitRepo) {
-                await initializeGitRepo(git)
-                return
+                progress.report({ increment: 20, message: "检查Git仓库..." })
+                // 检查是否是 Git 仓库
+                const isGitRepo: boolean = await git.checkIsRepo()
+                if (!isGitRepo) {
+                    await initializeGitRepo(git)
+                    return
+                }
+
+                progress.report({ increment: 30, message: "获取提交信息..." })
+                // 获取提交信息
+                const commitMessage: string | undefined = await vscode.window.showInputBox({
+                    prompt: '请输入提交信息',
+                    placeHolder: '例如: 更新代码'
+                })
+
+                if (!commitMessage) {
+                    return
+                }
+
+                progress.report({ increment: 40, message: "添加文件到暂存区..." })
+                // 添加所有更改的文件
+                await git.add('.')
+
+                progress.report({ increment: 50, message: "提交更改..." })
+                // 提交更改
+                await git.commit(commitMessage)
+
+                progress.report({ increment: 60, message: "推送到远程仓库..." })
+                // 推送到远程仓库
+                await git.push()
+
+                progress.report({ increment: 100, message: "完成！" })
+                vscode.window.showInformationMessage('代码提交成功！')
+            } catch (err) {
+                vscode.window.showErrorMessage(`提交代码失败: ${err instanceof Error ? err.message : String(err)}`)
             }
-
-            // 获取提交信息
-            const commitMessage: string | undefined = await vscode.window.showInputBox({
-                prompt: '请输入提交信息',
-                placeHolder: '例如: 更新代码'
-            })
-
-            if (!commitMessage) {
-                return
-            }
-
-            // 添加所有更改的文件
-            await git.add('.')
-
-            // 提交更改
-            await git.commit(commitMessage)
-
-            // 推送到远程仓库
-            await git.push()
-
-            vscode.window.showInformationMessage('代码提交成功！')
-        } catch (err) {
-            vscode.window.showErrorMessage(`提交代码失败: ${err instanceof Error ? err.message : String(err)}`)
-        }
+        })
     }))
 
     // 打开远程仓库地址的命令
     context.subscriptions.push(vscode.commands.registerCommand('qy-vscode-plugin.openRepo', async () => {
-        try {
-            const gitContext = await getGitContext()
-            if (!gitContext) {return}
+        await vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            cancellable: false
+        }, async (progress) => {
+            try {
+                progress.report({ increment: 20, message: "获取Git上下文..." })
+                const gitContext = await getGitContext()
+                if (!gitContext) {return}
 
-            const { git } = gitContext
+                const { git } = gitContext
 
-            const remotes = await git.getRemotes(true)
-            if (remotes.length === 0) {
-                vscode.window.showErrorMessage('未找到 Git 远程仓库地址！')
-                return
+                progress.report({ increment: 40, message: "获取远程仓库信息..." })
+                const remotes = await git.getRemotes(true)
+                if (remotes.length === 0) {
+                    vscode.window.showErrorMessage('未找到 Git 远程仓库地址！')
+                    return
+                }
+
+                progress.report({ increment: 60, message: "处理远程仓库地址..." })
+                let repoUrl: string
+                if (remotes.length === 1) {
+                    repoUrl = remotes[0].refs.fetch
+                } else {
+                    // 如果有多个远程仓库，让用户选择
+                    const remoteNames = remotes.map(remote => remote.name)
+                    const selectedRemote = await vscode.window.showQuickPick(remoteNames, {
+                        placeHolder: '选择要打开的远程仓库'
+                    })
+
+                    if (!selectedRemote) {return}
+
+                    const selected = remotes.find(remote => remote.name === selectedRemote)
+                    repoUrl = selected?.refs.fetch || remotes[0].refs.fetch
+                }
+
+                progress.report({ increment: 80, message: "打开浏览器..." })
+                vscode.env.openExternal(vscode.Uri.parse(repoUrl))
+
+                progress.report({ increment: 100, message: "完成！" })
+            } catch (err) {
+                vscode.window.showErrorMessage(`获取 Git 远程仓库地址失败: ${err instanceof Error ? err.message : String(err)}`)
             }
-
-            let repoUrl: string
-            if (remotes.length === 1) {
-                repoUrl = remotes[0].refs.fetch
-            } else {
-                // 如果有多个远程仓库，让用户选择
-                const remoteNames = remotes.map(remote => remote.name)
-                const selectedRemote = await vscode.window.showQuickPick(remoteNames, {
-                    placeHolder: '选择要打开的远程仓库'
-                })
-
-                if (!selectedRemote) {return}
-
-                const selected = remotes.find(remote => remote.name === selectedRemote)
-                repoUrl = selected?.refs.fetch || remotes[0].refs.fetch
-            }
-
-            vscode.env.openExternal(vscode.Uri.parse(repoUrl))
-        } catch (err) {
-            vscode.window.showErrorMessage(`获取 Git 远程仓库地址失败: ${err instanceof Error ? err.message : String(err)}`)
-        }
+        })
     }))
 }
 
