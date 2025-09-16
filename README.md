@@ -4,9 +4,9 @@
 
 ## 功能特性
 
-- Hello World 命令示例
 - 快速提交代码
 - 自定义提交代码的命令
+- 打开仓库的远程地址
 - 更多功能正在开发中...
 
 ## 开发环境设置
@@ -62,16 +62,12 @@ code --install-extension qy-vscode-plugin-0.0.1.vsix
 │   └── tasks.json    # 任务配置
 ├── src/              # 源代码
 │   ├── extension.ts  # 主扩展文件
-│   └── test/         # 测试文件
+│   └── activates/    # 各命令函数
 ├── out/              # 编译输出目录
 ├── package.json      # 扩展清单
 ├── tsconfig.json     # TypeScript 配置
 └── README.md         # 项目说明
 ```
-
-## 贡献
-
-欢迎提交 Issue 和 Pull Request！
 
 ## 许可证
 

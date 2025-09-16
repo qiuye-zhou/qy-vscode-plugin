@@ -14,10 +14,6 @@
   "contributes": {
     "commands": [
       {
-        "command": "qy-vscode-plugin.helloWorld",
-        "title": "Hello World"
-      },
-      {
         "command": "qy-vscode-plugin.quickCommit",
         "title": "qiuye: Push: chore update"
       },
