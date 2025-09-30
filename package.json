@@ -6,7 +6,6 @@
   "engines": {
     "vscode": "^1.103.0"
   },
-  "type": "module",
   "categories": [
     "Other"
   ],
