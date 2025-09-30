@@ -3,7 +3,6 @@ import { ENCODING } from '../utils/constants'
 
 export enum EFilePatchType {
   None = 'none',
-  Legacy = 'legacy',
   Latest = 'latest',
 }
 
@@ -41,10 +40,6 @@ export abstract class AbsPatchFile {
 
     if (content.includes('qy-vscode-plugin-start')) {
       return EFilePatchType.Latest
-    }
-
-    if (content.includes('vscode-background-start')) {
-      return EFilePatchType.Legacy
     }
 
     return EFilePatchType.None

@@ -1,6 +1,5 @@
 import * as vscode from 'vscode'
 import { Background } from '../background/Background'
-import { EXTENSION_NAME } from '../utils/constants'
 
 export function activate(context: vscode.ExtensionContext) {
   const background = new Background()
