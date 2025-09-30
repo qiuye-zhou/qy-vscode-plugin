@@ -1,8 +1,9 @@
-// eslint.config.js
-const typescriptEslint = require('@typescript-eslint/eslint-plugin');
-const tsParser = require('@typescript-eslint/parser');
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import prettier from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
 
-module.exports = [
+export default [
   {
     ignores: [
       'out/**',
@@ -20,9 +21,12 @@ module.exports = [
       }
     },
     plugins: {
-      '@typescript-eslint': typescriptEslint
+      '@typescript-eslint': typescriptEslint,
+      prettier: prettier,
     },
     rules: {
+      ...prettierConfig.rules,
+      'prettier/prettier': 'error',
       '@typescript-eslint/naming-convention': [
         'warn',
         {
