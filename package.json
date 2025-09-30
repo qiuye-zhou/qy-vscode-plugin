@@ -9,7 +9,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "icon": "public/icon.png",
   "contributes": {
@@ -25,8 +27,78 @@
       {
         "command": "qy-vscode-plugin.openRepo",
         "title": "qiuye: 打开远程仓库地址"
+      },
+      {
+        "command": "qy-vscode-plugin.background.install",
+        "title": "qiuye: 启用背景"
+      },
+      {
+        "command": "qy-vscode-plugin.background.disable",
+        "title": "qiuye: 禁用背景"
       }
     ],
+    "configuration": {
+      "type": "object",
+      "title": "qy-vscode-plugin",
+      "properties": {
+        "qy-vscode-plugin.background.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否启用背景功能"
+        },
+        "qy-vscode-plugin.background.fullscreen": {
+          "type": "object",
+          "default": {
+            "images": [],
+            "opacity": 0.1,
+            "size": "cover",
+            "position": "center",
+            "interval": 0,
+            "random": false
+          },
+          "properties": {
+            "images": {
+              "type": "array",
+              "default": [],
+              "items": {
+                "type": "string",
+                "pattern": "^(https://|file://)",
+                "patternErrorMessage": "图片URL必须以https://或file://开头"
+              },
+              "description": "背景图片列表，支持https和file协议"
+            },
+            "opacity": {
+              "type": "number",
+              "default": 0.1,
+              "minimum": 0,
+              "maximum": 0.6,
+              "description": "背景图片透明度，建议0.1-0.3"
+            },
+            "size": {
+              "type": "string",
+              "default": "cover",
+              "description": "背景图片大小，cover为自适应"
+            },
+            "position": {
+              "type": "string",
+              "default": "center",
+              "description": "背景图片位置"
+            },
+            "interval": {
+              "type": "number",
+              "default": 0,
+              "description": "轮播间隔时间（秒），0为禁用"
+            },
+            "random": {
+              "type": "boolean",
+              "default": false,
+              "description": "是否随机显示图片"
+            }
+          },
+          "description": "全屏背景配置"
+        }
+      }
+    },
     "menus": {
       "editor/context": [
         {
@@ -59,6 +131,8 @@
   "devDependencies": {
     "@types/node": "^22.10.2",
     "@types/vscode": "^1.96.0",
+    "@types/stylis": "^4.2.6",
+    "@types/uglify-js": "^3.17.5",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
     "@typescript-eslint/parser": "^8.18.1",
     "@vscode/test-electron": "^2.4.1",
@@ -72,7 +146,9 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "simple-git": "^3.27.0"
+    "simple-git": "^3.27.0",
+    "stylis": "^4.3.4",
+    "uglify-js": "^3.19.3"
   },
   "repository": {
     "type": "git",
