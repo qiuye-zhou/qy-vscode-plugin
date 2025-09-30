@@ -57,11 +57,9 @@ code --install-extension qy-vscode-plugin-0.0.1.vsix
 ## 项目结构
 
 ```
-├── .vscode/          # VSCode 配置文件
-│   ├── launch.json   # 调试配置
-│   └── tasks.json    # 任务配置
 ├── src/              # 源代码
 │   ├── extension.ts  # 主扩展文件
+│   ├── utils/        # 各工具函数
 │   └── activates/    # 各命令函数
 ├── out/              # 编译输出目录
 ├── package.json      # 扩展清单
