@@ -131,8 +131,6 @@
   "devDependencies": {
     "@types/node": "^22.10.2",
     "@types/vscode": "^1.96.0",
-    "@types/stylis": "^4.2.6",
-    "@types/uglify-js": "^3.17.5",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
     "@typescript-eslint/parser": "^8.18.1",
     "@vscode/test-electron": "^2.4.1",
@@ -146,9 +144,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "simple-git": "^3.27.0",
-    "stylis": "^4.3.4",
-    "uglify-js": "^3.19.3"
+    "simple-git": "^3.27.0"
   },
   "repository": {
     "type": "git",
