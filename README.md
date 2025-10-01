@@ -7,6 +7,7 @@
 - 快速提交代码
 - 自定义提交代码的命令
 - 打开仓库的远程地址
+- 自定义背景
 - 更多功能正在开发中...
 
 ## 开发环境设置
@@ -60,6 +61,7 @@ code --install-extension qy-vscode-plugin-0.0.1.vsix
 ├── src/              # 源代码
 │   ├── extension.ts  # 主扩展文件
 │   ├── utils/        # 各工具函数
+│   ├── background/   # 自定义背景相关逻辑
 │   └── activates/    # 各命令函数
 ├── out/              # 编译输出目录
 ├── package.json      # 扩展清单
