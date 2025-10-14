@@ -2,7 +2,7 @@
   "name": "qy-vscode-plugin",
   "displayName": "VSCode Plugin",
   "description": "VSCode辅助插件",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.103.0"
   },
