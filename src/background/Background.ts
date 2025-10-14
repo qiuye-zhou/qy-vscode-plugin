@@ -7,7 +7,7 @@ import {
   ENCODING,
   VERSION,
 } from '../utils/constants'
-import { showInfoRestart, showError } from '../utils/vsHelp'
+import { showInfo, showError } from '../utils/vsHelp'
 import { JsPatchFile } from './JsPatchFile'
 import { PatchGenerator, TPatchGeneratorConfig } from './PatchGeneratorFactory'
 
@@ -108,7 +108,7 @@ export class Background implements Disposable {
     if (!enabled) {
       if (hasInstalled) {
         await this.uninstall()
-        showInfoRestart('背景已禁用！请重启VSCode。')
+        showInfo('背景已禁用！请重启VSCode。')
       }
       return
     }
@@ -164,7 +164,7 @@ export class Background implements Disposable {
     // 如果启用且没有安装补丁，则应用补丁
     if (this.config.enabled && patchType === 'none') {
       if (await this.applyPatch()) {
-        showInfoRestart('背景已更改！请重启VSCode。')
+        showInfo('背景已更改！请重启VSCode。')
       }
     }
 

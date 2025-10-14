@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 import simpleGit, { SimpleGit } from 'simple-git'
-import { getProjectRoot } from '../utils'
+import { getProjectRoot, showError, showInfo } from '../utils'
 
 export function activate(context: vscode.ExtensionContext): void {
   // 快速提交代码的命令
@@ -44,9 +44,9 @@ export function activate(context: vscode.ExtensionContext): void {
               await git.push()
 
               progress.report({ increment: 100, message: '完成！' })
-              vscode.window.showInformationMessage('代码提交成功！')
+              showInfo('代码提交成功！')
             } catch (err) {
-              vscode.window.showErrorMessage(
+              showError(
                 `提交代码失败: ${err instanceof Error ? err.message : String(err)}`,
               )
             }
@@ -109,9 +109,9 @@ export function activate(context: vscode.ExtensionContext): void {
               await git.push()
 
               progress.report({ increment: 100, message: '完成！' })
-              vscode.window.showInformationMessage('代码提交成功！')
+              showInfo('代码提交成功！')
             } catch (err) {
-              vscode.window.showErrorMessage(
+              showError(
                 `提交代码失败: ${err instanceof Error ? err.message : String(err)}`,
               )
             }
@@ -142,7 +142,7 @@ export function activate(context: vscode.ExtensionContext): void {
             progress.report({ increment: 40, message: '获取远程仓库信息...' })
             const remotes = await git.getRemotes(true)
             if (remotes.length === 0) {
-              vscode.window.showErrorMessage('未找到 Git 远程仓库地址！')
+              showError('未找到 Git 远程仓库地址！')
               return
             }
 
@@ -175,7 +175,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
             progress.report({ increment: 100, message: '完成！' })
           } catch (err) {
-            vscode.window.showErrorMessage(
+            showError(
               `获取 Git 远程仓库地址失败: ${err instanceof Error ? err.message : String(err)}`,
             )
           }
@@ -192,7 +192,7 @@ async function getGitContext(): Promise<{
 } | null> {
   const activeEditor = vscode.window.activeTextEditor
   if (!activeEditor) {
-    vscode.window.showErrorMessage('请先打开一个文件！')
+    showError('请先打开一个文件！')
     return null
   }
 
@@ -200,7 +200,7 @@ async function getGitContext(): Promise<{
   const projectRoot = getProjectRoot(filePath)
 
   if (!projectRoot) {
-    vscode.window.showErrorMessage('未找到 Git 仓库！')
+    showError('未找到 Git 仓库！')
     return null
   }
 
@@ -236,6 +236,6 @@ async function initializeGitRepo(git: SimpleGit): Promise<void> {
       await git.addRemote('origin', remoteUrl)
     }
 
-    vscode.window.showInformationMessage('Git 仓库初始化成功！')
+    showInfo('Git 仓库初始化成功！')
   }
 }
