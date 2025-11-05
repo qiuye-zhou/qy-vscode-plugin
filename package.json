@@ -4,7 +4,7 @@
   "description": "VSCode辅助插件",
   "version": "0.1.0",
   "engines": {
-    "vscode": "^1.103.0"
+    "vscode": "^1.105.0"
   },
   "categories": [
     "Other"
@@ -129,22 +129,22 @@
     "lint": "eslint . --fix"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
-    "@types/vscode": "^1.96.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.1",
-    "@typescript-eslint/parser": "^8.18.1",
-    "@vscode/test-electron": "^2.4.1",
-    "esbuild": "^0.24.0",
-    "eslint": "9.35.0",
+    "@types/node": "^24.10.0",
+    "@types/vscode": "^1.105.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.25.12",
+    "eslint": "9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "prettier": "3.6.2",
-    "glob": "^11.0.0",
-    "mocha": "^11.0.1",
-    "typescript": "^5.7.2"
+    "glob": "^11.0.3",
+    "mocha": "^11.7.5",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "simple-git": "^3.27.0"
+    "simple-git": "^3.30.0"
   },
   "repository": {
     "type": "git",
