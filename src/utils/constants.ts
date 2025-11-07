@@ -1,10 +1,57 @@
 import * as path from 'path'
 import * as os from 'os'
+import * as child_process from 'child_process'
 
 export const EXTENSION_NAME = 'qy-vscode-plugin'
 export const VERSION = '0.0.1'
 export const BACKGROUND_VER = 'background.ver'
 export const ENCODING = 'utf8'
+
+function getVSCodePathFromRunningProcess(): string {
+  try {
+    let command: string
+    let isWindows = os.platform() === 'win32'
+
+    if (isWindows) {
+      command =
+        'wmic process where "name=\'Code.exe\'" get ExecutablePath /value'
+    } else {
+      command =
+        'ps aux | grep "[c]ode" | grep -v grep | head -1 | awk \'{for(i=11;i<=NF;i++) print $i}\''
+    }
+
+    const result = child_process.execSync(command, { encoding: 'utf8' })
+
+    if (result) {
+      if (isWindows) {
+        // Windows 输出示例: ExecutablePath=C:\Program Files\Microsoft VS Code\Code.exe
+        const match = result.match(/ExecutablePath=(.*)/)
+        if (match && match[1]) {
+          return path.dirname(match[1].trim())
+        }
+      } else {
+        // Unix-like 系统
+        const lines = result
+          .trim()
+          .split('\n')
+          .filter((line) => line.includes('code') || line.includes('Code'))
+        if (lines.length > 0) {
+          const fullPath = lines[0].trim()
+          // 移除参数，只保留路径
+          const codePath = fullPath.split(' ')[0]
+          return path.dirname(codePath)
+        }
+      }
+    }
+  } catch (error) {
+    console.debug(
+      'Could not determine VSCode path from running process:',
+      error,
+    )
+  }
+
+  return ''
+}
 
 // 获取VSCode的安装路径
 export function getVSCodePath() {
@@ -13,15 +60,7 @@ export function getVSCodePath() {
 
   switch (platform) {
     case 'win32':
-      vscodePath =
-        process.env.VSCODE_PATH ||
-        path.join(
-          os.homedir(),
-          'AppData',
-          'Local',
-          'Programs',
-          'Microsoft VS Code',
-        )
+      vscodePath = process.env.VSCODE_PATH || getVSCodePathFromRunningProcess()
       break
     case 'darwin':
       vscodePath =
