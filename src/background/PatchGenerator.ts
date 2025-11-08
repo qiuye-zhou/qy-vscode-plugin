@@ -27,12 +27,11 @@ export abstract class AbsPatchGenerator<T extends { images: string[] }> {
 
   protected normalizeImageUrls(images: string[]) {
     return images.map((imageUrl) => {
-      if (!imageUrl.startsWith('file://')) {
-        return imageUrl
+      if (imageUrl.startsWith('file://')) {
+        const url = imageUrl.replace('file://', 'vscode-file://vscode-app')
+        return vscode.Uri.parse(url).toString()
       }
-
-      const url = imageUrl.replace('file://', 'vscode-file://vscode-app')
-      return vscode.Uri.parse(url).toString()
+      return imageUrl
     })
   }
 
