@@ -29,6 +29,7 @@ export abstract class AbsPatchGenerator<T extends { images: string[] }> {
     return images.map((imageUrl) => {
       if (imageUrl.startsWith('file://')) {
         const url = imageUrl.replace('file://', 'vscode-file://vscode-app')
+        // FIXME: 使用file协议的背景图片可能有问题
         return vscode.Uri.parse(url).toString()
       }
       return imageUrl
