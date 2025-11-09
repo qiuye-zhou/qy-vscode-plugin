@@ -2,8 +2,7 @@ import * as path from 'path'
 import * as os from 'os'
 import * as child_process from 'child_process'
 
-export const EXTENSION_NAME = 'qy-vscode-plugin'
-export const VERSION = '0.0.1'
+export const VERSION = '0.1.0'
 export const BACKGROUND_VER = 'background.ver'
 export const ENCODING = 'utf8'
 
