@@ -146,6 +146,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@vscode/sudo-prompt": "^9.3.1",
     "simple-git": "^3.30.0"
   },
   "repository": {

@@ -1,12 +1,8 @@
 import * as fs from 'fs'
 import * as vscode from 'vscode'
 import { Disposable } from 'vscode'
-import {
-  vscodePath,
-  TOUCH_JSFILE_PATH,
-  ENCODING,
-  VERSION,
-} from '../utils/constants'
+import { TOUCH_JSFILE_PATH, ENCODING, VERSION } from '../utils/constants'
+import { vscodePath } from '../utils/vscodePath'
 import { showInfo, showError } from '../utils/vsHelp'
 import { JsPatchFile } from './JsPatchFile'
 import { PatchGenerator, TPatchGeneratorConfig } from './PatchGeneratorFactory'
