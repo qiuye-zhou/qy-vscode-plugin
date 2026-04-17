@@ -6,7 +6,7 @@
 
 - 快速提交代码，自定义提交代码的命令
 - 快速打开仓库的远程地址
-- 自定义Vscode背景(图片使用file协议有问题待修，暂时只能使用http的图片)
+- 自定义Vscode背景(支持http图片，file协议图片)
 - 更多功能正在开发中...
 
 ## 安装
@@ -27,7 +27,7 @@
   "qy-vscode-plugin.background.enabled": true,
   "qy-vscode-plugin.background.fullscreen": {
     "images": [
-      "https://example.com/image1.jpg",
+      "https://example.com/image1.jpg", "file:///D:/image2.jpg"
     ],
     "opacity": 0.1,
     "size": "cover",
@@ -40,7 +40,7 @@
 
 ## 参数说明
 
-- \`images\`: 背景图片列表，支持https协议
+- \`images\`: 背景图片列表，支持https，file协议
 - \`opacity\`: 透明度，建议0.1-0.3
 - \`size\`: 图片大小，cover为自适应
 - \`position\`: 图片位置

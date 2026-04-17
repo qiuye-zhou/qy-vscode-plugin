@@ -64,8 +64,8 @@
               "default": [],
               "items": {
                 "type": "string",
-                "pattern": "^(https://|file://)",
-                "patternErrorMessage": "图片URL必须以https://或file://开头"
+                "pattern": "^(https://|file:///)",
+                "patternErrorMessage": "图片URL必须以https://或file:///开头"
               },
               "description": "背景图片列表，支持https和file协议"
             },
