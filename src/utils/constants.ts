@@ -1,7 +1,9 @@
 import * as path from 'path'
 import * as os from 'os'
 
-export const VERSION = '0.1.0'
+import pkg from '../../package.json'
+
+export const VERSION = pkg.version
 export const BACKGROUND_VER = 'background.ver'
 export const ENCODING = 'utf8'
 
