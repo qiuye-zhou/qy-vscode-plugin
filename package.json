@@ -31,6 +31,10 @@
         "title": "qiuye: 打开远程仓库地址"
       },
       {
+        "command": "qy-vscode-plugin.aiVariableName",
+        "title": "qiuye: 生成变量名"
+      },
+      {
         "command": "qy-vscode-plugin.background.install",
         "title": "qiuye: 启用背景"
       },
@@ -43,6 +47,32 @@
       "type": "object",
       "title": "qy-vscode-plugin",
       "properties": {
+        "qy-vscode-plugin.openai": {
+          "type": "object",
+          "default": {
+            "apiKey": "",
+            "baseUrl": "",
+            "model": ""
+          },
+          "properties": {
+            "apiKey": {
+              "type": "string",
+              "default": "",
+              "description": "OpenAI API Key"
+            },
+            "baseUrl": {
+              "type": "string",
+              "default": "",
+              "description": "OpenAI API Base URL (适用于阿里云通义千问、DeepSeek 等兼容接口)"
+            },
+            "model": {
+              "type": "string",
+              "default": "",
+              "description": "OpenAI Model Name (deepseek-chat, gpt-3.5-turbo, gpt-4o, qwen-plus)"
+            }
+          },
+          "description": "OpenAI 相关配置 (API Key, Base URL, Model)"
+        },
         "qy-vscode-plugin.background.enabled": {
           "type": "boolean",
           "default": true,
@@ -104,19 +134,24 @@
     "menus": {
       "editor/context": [
         {
-          "when": "editorFocus",
-          "command": "qy-vscode-plugin.quickCommit",
+          "when": "editorTextFocus",
+          "command": "qy-vscode-plugin.aiVariableName",
           "group": "navigation@-999"
         },
         {
           "when": "editorFocus",
-          "command": "qy-vscode-plugin.customCommit",
+          "command": "qy-vscode-plugin.quickCommit",
           "group": "navigation@-998"
         },
         {
           "when": "editorFocus",
-          "command": "qy-vscode-plugin.openRepo",
+          "command": "qy-vscode-plugin.customCommit",
           "group": "navigation@-997"
+        },
+        {
+          "when": "editorFocus",
+          "command": "qy-vscode-plugin.openRepo",
+          "group": "navigation@-996"
         }
       ]
     }
@@ -140,13 +175,14 @@
     "eslint": "9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
-    "prettier": "3.6.2",
     "glob": "^11.0.3",
     "mocha": "^11.7.5",
+    "prettier": "3.6.2",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "@vscode/sudo-prompt": "^9.3.1",
+    "openai": "^6.34.0",
     "simple-git": "^3.30.0"
   },
   "repository": {

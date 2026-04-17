@@ -1,6 +1,7 @@
 import * as vscode from 'vscode'
 import { activate as quickGitActivate } from './activates/quickGit'
 import { activate as backgroundActivate } from './activates/background'
+import { activate as aiVariableNameActivate } from './activates/aiVariableName'
 
 // 扩展被激活时调用此方法
 export function activate(context: vscode.ExtensionContext) {
@@ -8,6 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   quickGitActivate(context)
   backgroundActivate(context)
+  aiVariableNameActivate(context)
 }
 
 // 扩展被停用时调用此方法
