@@ -116,14 +116,10 @@ export function activate(context: vscode.ExtensionContext): void {
               const document = editor.document
               const selection = editor.selection
 
-              // 获取选中文本，如果没有选中则获取当前行或光标附近内容作为上下文参考
-              const selectedText = document.getText(selection)
+              // 获取当前行或光标附近内容作为上下文参考
               const currentLine = document.lineAt(selection.active.line).text
               // 限制上下文长度，避免 Token 消耗过大
-              const contextCode = (selectedText || currentLine).substring(
-                0,
-                100,
-              )
+              const contextCode = currentLine.substring(0, 100)
 
               // 用户输入关键字/描述
               progress.report({ increment: 10, message: '等待用户输入...' })
@@ -158,10 +154,10 @@ export function activate(context: vscode.ExtensionContext): void {
               const selectedVar = await vscode.window.showQuickPick(
                 variableNames.map((name) => ({
                   label: name,
-                  description: '点击复制',
+                  description: '点击插入',
                 })),
                 {
-                  placeHolder: '选择要复制的变量名',
+                  placeHolder: '选择要插入的变量名',
                 },
               )
 
@@ -169,12 +165,17 @@ export function activate(context: vscode.ExtensionContext): void {
                 return
               }
 
-              // 复制到剪贴板
-              progress.report({ increment: 90, message: '正在复制到剪贴板...' })
-              await vscode.env.clipboard.writeText(selectedVar.label)
+              // 直接编辑文档，将变量名插入到光标/选中区域
+              progress.report({ increment: 90, message: '正在插入变量名...' })
+
+              await editor.edit((editBuilder) => {
+                // 如果用户之前有选中文本，replace 会替换选中文本；
+                // 如果没选中，selection.start 和 selection.end 相同，即为插入操作
+                editBuilder.replace(selection, selectedVar.label)
+              })
 
               progress.report({ increment: 100, message: '完成！' })
-              showInfo(`已复制变量名: ${selectedVar.label}`)
+              showInfo(`已插入变量名: ${selectedVar.label}`)
             } catch (err) {
               showError(
                 `生成失败: ${err instanceof Error ? err.message : String(err)}`,
