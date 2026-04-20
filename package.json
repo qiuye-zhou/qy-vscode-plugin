@@ -1,7 +1,7 @@
 {
   "name": "qy-vscode-plugin",
   "displayName": "VSCode Plugin",
-  "description": "VSCode辅助插件",
+  "description": "提升开发体验的 VSCode 辅助插件：支持 Git 快速提交、远程仓库跳转、自定义背景及 AI 智能变量命名。",
   "version": "0.1.0",
   "engines": {
     "vscode": "^1.105.0"
@@ -10,6 +10,16 @@
     "Other",
     "Themes",
     "SCM Providers"
+  ],
+  "keywords": [
+    "git",
+    "commit",
+    "background",
+    "ai",
+    "variable name",
+    "productivity",
+    "openai",
+    "custom theme"
   ],
   "activationEvents": [
     "onStartupFinished"
