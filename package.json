@@ -12,6 +12,9 @@
     "SCM Providers"
   ],
   "keywords": [
+    "vscode",
+    "extension",
+    "plugin",
     "git",
     "commit",
     "background",
@@ -199,11 +202,6 @@
     "type": "git",
     "url": "https://github.com/qiuye-zhou/qy-vscode-plugin.git"
   },
-  "keywords": [
-    "vscode",
-    "extension",
-    "plugin"
-  ],
   "author": "秋叶",
   "license": "MIT",
   "publisher": "qiuye-zhou"
