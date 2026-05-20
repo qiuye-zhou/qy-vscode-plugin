@@ -14,11 +14,8 @@ export function activate(context: vscode.ExtensionContext) {
       async () => {
         const config = vscode.workspace.getConfiguration('qy-vscode-plugin')
         await config.update('background.enabled', true, true)
-        // 等待配置更新后再应用补丁
-        setTimeout(async () => {
-          await background.applyPatch()
-          await vscode.commands.executeCommand('workbench.action.reloadWindow')
-        }, 100)
+        await background.applyPatch()
+        await vscode.commands.executeCommand('workbench.action.reloadWindow')
       },
     ),
   )

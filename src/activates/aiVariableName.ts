@@ -7,9 +7,6 @@ let openAIClient: OpenAI | null = null
 // 缓存上次使用的配置，以便在配置变更时重新初始化客户端
 let lastConfigHash: string = ''
 
-/**
- * 获取 OpenAI 配置
- */
 function getOpenAIConfig(): {
   apiKey: string
   baseUrl: string
@@ -30,9 +27,6 @@ function getOpenAIConfig(): {
   return { apiKey, baseUrl, model }
 }
 
-/**
- * 获取 OpenAI 客户端实例
- */
 function getOpenAIClient(): OpenAI {
   const { apiKey, baseUrl } = getOpenAIConfig()
 
@@ -48,8 +42,8 @@ function getOpenAIClient(): OpenAI {
     )
   }
 
-  // 生成配置哈希以检测变化
-  const currentHash = `${apiKey}-${baseUrl}`
+  // 生成配置哈希以检测变化（不暴露完整key）
+  const currentHash = `${apiKey.length}-${apiKey.slice(-4)}-${baseUrl}`
 
   // 如果配置未变且客户端已存在，直接返回
   if (openAIClient && lastConfigHash === currentHash) {
@@ -68,10 +62,6 @@ function getOpenAIClient(): OpenAI {
   return openAIClient
 }
 
-/**
- * 获取当前配置的 Model 名称
- * 如果未配置，则抛出错误
- */
 function getConfiguredModel(): string {
   const { model } = getOpenAIConfig()
 
@@ -188,12 +178,6 @@ export function activate(context: vscode.ExtensionContext): void {
   )
 }
 
-/**
- * 调用 OpenAI 接口获取变量名列表
- * @param description 用户输入的描述
- * @param codeContext 当前代码上下文
- * @returns 变量名数组
- */
 async function callAiApiForVariables(
   description: string,
   codeContext: string,
@@ -223,7 +207,7 @@ async function callAiApiForVariables(
         { role: 'user', content: userPrompt },
       ],
       temperature: 0.7,
-      max_tokens: 10,
+      max_tokens: 200,
     })
 
     const content = completion.choices[0]?.message?.content

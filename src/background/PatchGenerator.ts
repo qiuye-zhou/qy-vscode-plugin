@@ -1,17 +1,11 @@
 import * as vscode from 'vscode'
 
-export function css(template: TemplateStringsArray, ...args: any[]) {
+export function css(
+  template: TemplateStringsArray,
+  ...args: (string | number | undefined)[]
+) {
   return template.reduce((prev, curr, i) => {
-    let arg = args[i]
-
-    if (typeof arg === 'function') {
-      arg = arg()
-    }
-    if (Array.isArray(arg)) {
-      arg = arg.join('')
-    }
-
-    return prev + curr + (arg ?? '')
+    return prev + curr + (args[i] ?? '')
   }, '')
 }
 
