@@ -2,28 +2,13 @@ import sudo from '@vscode/sudo-prompt'
 
 import { vsc } from './vsc'
 
-export namespace _ {
-  /**
-   * if desktop
-   *
-   * desktop: `desktop`
-   * code-server: `server-distro`
-   * See: https://code.visualstudio.com/api/references/vscode-api#env
-   */
+export namespace sudoUtils {
   export const isDesktop = vsc?.env.appHost === 'desktop'
 
-  /**
-   * 提权运行
-   *
-   * @export
-   * @param {string} cmd
-   * @param {{ name?: string }} [options={}]
-   * @return {*}  {Promise<any>}
-   */
   export function sudoExec(
     cmd: string,
     options: { name?: string } = {},
-  ): Promise<any> {
+  ): Promise<[string | Buffer | undefined, string | Buffer | undefined]> {
     return new Promise((resolve, reject) => {
       sudo.exec(
         cmd,
@@ -36,16 +21,5 @@ export namespace _ {
         },
       )
     })
-  }
-
-  /**
-   * wrap with IIFE
-   *
-   * @export
-   * @param {string} source
-   * @return {*}
-   */
-  export function withIIFE(source: string) {
-    return `;(function() { ${source} })();`
   }
 }

@@ -3,7 +3,7 @@ import * as vscode from 'vscode'
 import { Disposable } from 'vscode'
 import { TOUCH_JSFILE_PATH, ENCODING, VERSION } from '../utils/constants'
 import { vscodePath } from '../utils/vscodePath'
-import { showInfo, showError } from '../utils/vsHelp'
+import { showInfo, showError } from '../utils'
 import { JsPatchFile } from './JsPatchFile'
 import { PatchGenerator, TPatchGeneratorConfig } from './PatchGeneratorFactory'
 
@@ -32,14 +32,11 @@ export class Background implements Disposable {
 
     if (firstLoad) {
       vscode.window
-        .showInformationMessage(`欢迎使用背景插件 v${VERSION}!`, {
-          title: '更多',
-        })
+        .showInformationMessage(`欢迎使用背景插件 v${VERSION}!`, '更多')
         .then((confirm) => {
-          if (!confirm) {
-            return
+          if (confirm === '更多') {
+            this.showWelcome()
           }
-          this.showWelcome()
         })
 
       await fs.promises.writeFile(
@@ -109,7 +106,6 @@ export class Background implements Disposable {
       return
     }
 
-    // 检查是否有配置的图片
     if (
       !this.config.fullscreen.images ||
       this.config.fullscreen.images.length === 0
@@ -120,12 +116,10 @@ export class Background implements Disposable {
 
     const confirm = await vscode.window.showInformationMessage(
       '配置已更改，点击更新。',
-      {
-        title: '更新并重启',
-      },
+      '更新并重启',
     )
 
-    if (!confirm) {
+    if (confirm !== '更新并重启') {
       return
     }
 
@@ -135,6 +129,11 @@ export class Background implements Disposable {
 
   public async applyPatch() {
     if (!this.config.enabled) {
+      return false
+    }
+
+    if (!fs.existsSync(vscodePath.jsPath)) {
+      showError(`未找到 VSCode 核心文件: ${vscodePath.jsPath}`)
       return false
     }
 
@@ -148,6 +147,7 @@ export class Background implements Disposable {
     } catch (error) {
       console.error('Failed to apply patch:', error)
       showError('应用背景补丁失败！')
+      await this.jsFile.forceRestore()
       return false
     }
   }
@@ -155,9 +155,13 @@ export class Background implements Disposable {
   public async setup(): Promise<any> {
     await this.checkFirstload()
 
+    if (!fs.existsSync(vscodePath.jsPath)) {
+      console.warn(`VSCode core file not found: ${vscodePath.jsPath}`)
+      return
+    }
+
     const patchType = await this.jsFile.getPatchType()
 
-    // 如果启用且没有安装补丁，则应用补丁
     if (this.config.enabled && patchType === 'none') {
       if (await this.applyPatch()) {
         showInfo('背景已更改！请重启VSCode。')

@@ -31,19 +31,20 @@ export class FullscreenPatchGenerator<
     const { size, position, opacity } = this.curConfig
 
     return css`
-      body::after {
-        content: '';
-        display: block;
-        position: absolute;
-        z-index: 1000;
-        inset: 0;
-        pointer-events: none;
-        background-size: ${size};
-        background-repeat: no-repeat;
-        background-position: ${position};
-        opacity: ${opacity};
-        transition: 1s;
-        background-image: var(${this.cssvariable});
+      .background-layer {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background-image: var(${this.cssvariable}) !important;
+        background-size: ${size} !important;
+        background-repeat: no-repeat !important;
+        background-position: ${position} !important;
+        opacity: ${opacity} !important;
+        z-index: 999999 !important;
+        pointer-events: none !important;
+        transition: opacity 1s !important;
       }
     `
   }
@@ -51,7 +52,6 @@ export class FullscreenPatchGenerator<
   protected getScript(): string {
     const { images, random, interval } = this.curConfig
 
-    // 如果没有图片，返回空脚本
     if (!images || images.length === 0) {
       return ''
     }
@@ -77,6 +77,18 @@ function getNextImg() {
 function setNextImg() {
     document.body.style.setProperty(cssvariable, 'url(' + getNextImg() + ')');
 }
+
+function createBackgroundLayer() {
+    let layer = document.getElementById('qy-background-layer');
+    if (!layer) {
+        layer = document.createElement('div');
+        layer.id = 'qy-background-layer';
+        layer.className = 'background-layer';
+        document.body.appendChild(layer);
+    }
+}
+
+createBackgroundLayer();
 
 if (interval > 0) {
     setInterval(setNextImg, interval * 1000);
