@@ -3,7 +3,7 @@ import * as vscode from 'vscode'
 import { Disposable } from 'vscode'
 import { TOUCH_JSFILE_PATH, ENCODING, VERSION } from '../utils/constants'
 import { vscodePath } from '../utils/vscodePath'
-import { showInfo, showError } from '../utils'
+import { showError } from '../utils'
 import { JsPatchFile } from './JsPatchFile'
 import { PatchGenerator, TPatchGeneratorConfig } from './PatchGeneratorFactory'
 
@@ -101,7 +101,6 @@ export class Background implements Disposable {
     if (!enabled) {
       if (hasInstalled) {
         await this.uninstall()
-        showInfo('背景已禁用！请重启VSCode。')
       }
       return
     }
@@ -110,21 +109,10 @@ export class Background implements Disposable {
       !this.config.fullscreen.images ||
       this.config.fullscreen.images.length === 0
     ) {
-      vscode.window.showWarningMessage('请先配置背景图片！')
-      return
-    }
-
-    const confirm = await vscode.window.showInformationMessage(
-      '配置已更改，点击更新。',
-      '更新并重启',
-    )
-
-    if (confirm !== '更新并重启') {
       return
     }
 
     await this.applyPatch()
-    vscode.commands.executeCommand('workbench.action.reloadWindow')
   }
 
   public async applyPatch() {
@@ -163,9 +151,7 @@ export class Background implements Disposable {
     const patchType = await this.jsFile.getPatchType()
 
     if (this.config.enabled && patchType === 'none') {
-      if (await this.applyPatch()) {
-        showInfo('背景已更改！请重启VSCode。')
-      }
+      await this.applyPatch()
     }
 
     this.disposables.push(
