@@ -2,7 +2,6 @@ import * as vscode from 'vscode'
 import OpenAI from 'openai'
 import { showError, showInfo } from '../utils'
 
-// 定义 OpenAI 客户端单例，避免重复初始化
 let openAIClient: OpenAI | null = null
 // 缓存上次使用的配置，以便在配置变更时重新初始化客户端
 let lastConfigHash: string = ''
@@ -139,7 +138,6 @@ export function activate(context: vscode.ExtensionContext): void {
                 return
               }
 
-              // 让用户选择变量名
               progress.report({ increment: 60, message: '请选择变量名...' })
               const selectedVar = await vscode.window.showQuickPick(
                 variableNames.map((name) => ({
@@ -155,7 +153,6 @@ export function activate(context: vscode.ExtensionContext): void {
                 return
               }
 
-              // 直接编辑文档，将变量名插入到光标/选中区域
               progress.report({ increment: 90, message: '正在插入变量名...' })
 
               await editor.edit((editBuilder) => {
@@ -223,7 +220,6 @@ async function callAiApiForVariables(
         (line) => line.length > 0 && /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(line),
       ) // 简单的变量名正则校验
 
-    // 去重
     return [...new Set(names)]
   } catch (error) {
     console.error('OpenAI API Error:', error)

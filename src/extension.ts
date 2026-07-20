@@ -4,7 +4,7 @@ import { activate as backgroundActivate } from './activates/background'
 import { activate as aiVariableNameActivate } from './activates/aiVariableName'
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log('扩展 "qy-vscode-plugin" 已经激活！')
+  console.log('扩展 "qy-vscode-plugin" 已经启动！')
 
   quickGitActivate(context)
   backgroundActivate(context)
@@ -12,5 +12,5 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-  console.log('插件 "qy-vscode-plugin" 已经被释放')
+  console.log('扩展 "qy-vscode-plugin" 已经停用！')
 }
