@@ -31,13 +31,7 @@ export class Background implements Disposable {
     const firstLoad = !fs.existsSync(TOUCH_JSFILE_PATH)
 
     if (firstLoad) {
-      vscode.window
-        .showInformationMessage(`欢迎使用背景插件 v${VERSION}!`, '更多')
-        .then((confirm) => {
-          if (confirm === '更多') {
-            this.showWelcome()
-          }
-        })
+      vscode.window.showInformationMessage(`欢迎使用背景插件 v${VERSION}!`)
 
       await fs.promises.writeFile(
         TOUCH_JSFILE_PATH,
@@ -48,50 +42,6 @@ export class Background implements Disposable {
     }
 
     return false
-  }
-
-  public async showWelcome() {
-    const content = `
-# 背景插件使用说明
-
-## 配置方法
-
-在VSCode设置中添加以下配置：
-
-\`\`\`json
-{
-  "qy-vscode-plugin.background.enabled": true,
-  "qy-vscode-plugin.background.fullscreen": {
-    "images": [
-      "https://example.com/image1.jpg",
-      "file:///path/to/local/image.jpg"
-    ],
-    "opacity": 0.1,
-    "size": "cover",
-    "position": "center",
-    "interval": 0,
-    "random": false
-  }
-}
-\`\`\`
-
-## 参数说明
-
-- \`images\`: 背景图片列表，支持https和file协议
-- \`opacity\`: 透明度，建议0.1-0.3
-- \`size\`: 图片大小，cover为自适应
-- \`position\`: 图片位置
-- \`interval\`: 轮播间隔（秒），0为禁用
-- \`random\`: 是否随机显示
-
-配置完成后重启VSCode即可生效。
-        `
-
-    const doc = await vscode.workspace.openTextDocument({
-      content,
-      language: 'markdown',
-    })
-    await vscode.window.showTextDocument(doc)
   }
 
   private async onConfigChange() {

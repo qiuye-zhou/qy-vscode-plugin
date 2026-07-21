@@ -15,12 +15,10 @@ export function activate(context: vscode.ExtensionContext): void {
           async (progress) => {
             try {
               progress.report({ increment: 10, message: '获取Git上下文...' })
-              const gitContext = await getGitContext()
-              if (!gitContext) {
+              const git = await getGit()
+              if (!git) {
                 return
               }
-
-              const { git } = gitContext
 
               progress.report({ increment: 20, message: '检查Git仓库...' })
               const isGitRepo: boolean = await git.checkIsRepo()
@@ -63,12 +61,10 @@ export function activate(context: vscode.ExtensionContext): void {
           async (progress) => {
             try {
               progress.report({ increment: 10, message: '获取Git上下文...' })
-              const gitContext = await getGitContext()
-              if (!gitContext) {
+              const git = await getGit()
+              if (!git) {
                 return
               }
-
-              const { git } = gitContext
 
               progress.report({ increment: 10, message: '检查Git仓库...' })
               const isGitRepo: boolean = await git.checkIsRepo()
@@ -120,12 +116,10 @@ export function activate(context: vscode.ExtensionContext): void {
         async (progress) => {
           try {
             progress.report({ increment: 20, message: '获取Git上下文...' })
-            const gitContext = await getGitContext()
-            if (!gitContext) {
+            const git = await getGit()
+            if (!git) {
               return
             }
-
-            const { git } = gitContext
 
             progress.report({ increment: 30, message: '获取远程仓库信息...' })
             const remotes = await git.getRemotes(true)
@@ -170,11 +164,7 @@ export function activate(context: vscode.ExtensionContext): void {
   )
 }
 
-// 获取 Git 上下文
-async function getGitContext(): Promise<{
-  git: SimpleGit
-  projectRoot: string
-} | null> {
+async function getGit(): Promise<SimpleGit | null> {
   const activeEditor = vscode.window.activeTextEditor
   if (!activeEditor) {
     showError('请先打开一个文件！')
@@ -189,12 +179,10 @@ async function getGitContext(): Promise<{
     return null
   }
 
-  const git: SimpleGit = simpleGit({
+  return simpleGit({
     baseDir: projectRoot,
     binary: 'git',
   })
-
-  return { git, projectRoot }
 }
 
 async function initializeGitRepo(git: SimpleGit): Promise<void> {

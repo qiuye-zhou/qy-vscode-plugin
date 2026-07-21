@@ -18,10 +18,9 @@ function getOpenAIConfig(): {
     model: string
   }>('openai') || { apiKey: '', baseUrl: '', model: '' }
 
-  // 兼容环境变量 (仅当配置中未填写时使用)
   const apiKey = openaiConfig.apiKey || process.env.OPENAI_API_KEY || ''
   const baseUrl = openaiConfig.baseUrl || ''
-  const model = openaiConfig.model
+  const model = openaiConfig.model || 'gpt-3.5-turbo'
 
   return { apiKey, baseUrl, model }
 }
@@ -63,13 +62,6 @@ function getOpenAIClient(): OpenAI {
 
 function getConfiguredModel(): string {
   const { model } = getOpenAIConfig()
-
-  if (!model) {
-    throw new Error(
-      '未配置 OpenAI Model。请在 VS Code 设置中配置 "qy-vscode-plugin.openai" (deepseek-chat, gpt-3.5-turbo, gpt-4o, qwen-plus)',
-    )
-  }
-
   return model
 }
 

@@ -25,10 +25,7 @@ export abstract class AbsPatchGenerator<T extends { images: string[] }> {
         let url = imageUrl.trim()
 
         url = url.replace(/^['"`\s]+|['"`\s]+$/g, '')
-
         url = url.replace(/`/g, '')
-
-        url = url.trim()
 
         if (url.startsWith('file://')) {
           url = url.replace('file://', 'vscode-file://vscode-app')
